@@ -71,9 +71,33 @@ export const updatePost = asyncHandler(async (req, res) => {
 });
 
 export const deletePost = asyncHandler(async (req, res) => {
+  // Check if user is authenticated
+  if (!req.user || !req.user._id) {
+    res.status(401);
+    throw new Error('Not authenticated');
+  }
+
+  // Find the post by ID
   const post = await Post.findById(req.params.id);
-  if (!post) throw new Error('Post not found');
-  if (post.user.toString() !== req.user._id.toString()) throw new Error('Unauthorized');
+  
+  // Check if post exists
+  if (!post) {
+    res.status(404);
+    throw new Error('Post not found');
+  }
+  
+  // Check if the authenticated user is the owner of the post
+  if (post.user.toString() !== req.user._id.toString()) {
+    res.status(403);
+    throw new Error('Unauthorized - You can only delete your own posts');
+  }
+  
+  // Delete the post
   await post.deleteOne();
-  res.json({ message: 'Post deleted' });
+  
+  // Send success response
+  res.status(200).json({ 
+    success: true,
+    message: 'Post deleted successfully' 
+  });
 });
