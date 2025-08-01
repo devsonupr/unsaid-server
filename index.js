@@ -44,7 +44,7 @@ app.use(cookieParser());
 
 // Allow frontend origin with credentials
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173','https://unsaid-client.vercel.app'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
