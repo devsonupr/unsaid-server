@@ -18,11 +18,11 @@ router.use('/:postId/likes', likeRoutes);
 
 router.get('/', getPosts);
 router.get('/:id', getPost);
+router.delete('/:id', protect, deletePost);
 router.get('/user/:userId', getPostsByUser);
 router.get('/userr/:username', getPostsByUsername);
 router.post('/', protect, createPost);
 router.put('/:id', protect, updatePost);
-router.delete('/:id', protect, deletePost);
 
 export default router;
 
